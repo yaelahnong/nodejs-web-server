@@ -10,7 +10,10 @@
 const http = require('http');
 
 const requestListener = (request, response) => {
-    response.setHeader('Content-Type', 'text/html');
+    // setHeader(property, value);
+    response.setHeader('Content-Type', 'application/json');
+    // apabila nama properti tidak standar maka namai dengan huruf X diawal penamaannya
+    response.setHeader('X-Powered-By', 'NodeJS');
 
     // properti method dan url yang diterima oleh request
     const { url, method } = request;
@@ -18,18 +21,25 @@ const requestListener = (request, response) => {
     if(url === '/') {
         
         if(method === 'GET') {
+            // response.write();
             response.statusCode = 200;
-            response.end('Ini adalah homepage. \n');
+            response.end(JSON.stringify({
+                message: 'Ini adalah homepage.'
+            }));
         } else {
             response.statusCode = 400;
-            response.end(`Halaman ini tidak dapat diakses dengan method ${method}! \n`);
+            response.end(JSON.stringify({
+                message: `Halaman ini tidak dapat diakses dengan method ${method}!`
+            }));
         }
         
     } else if(url === '/about') {
         
         if(method === 'GET') {
             response.statusCode = 200;
-            response.end('Halo! ini adalah halaman about. \n');
+            response.end(JSON.stringify({
+                message: 'Halo! ini adalah halaman about.'
+            }));
         } else if(method === 'POST') {
             
             let body = [];
@@ -42,16 +52,22 @@ const requestListener = (request, response) => {
                 body = Buffer.concat(body).toString();
                 const { name } = JSON.parse(body);
                 response.statusCode = 200;
-                response.end(`Halo, ${name}! Ini adalah halaman about. \n`);
+                response.end(JSON.stringify({
+                    message: `Halo, ${name}! Ini adalah halaman about.`
+                }));
             });
         } else {
             response.statusCode = 400;
-            response.end(`Halaman ini tidak dapat diakses dengan method ${method}! \n`);
+            response.end(JSON.stringify({
+                message: `Halaman ini tidak dapat diakses dengan method ${method}!`
+            }));
         }
 
     } else {
         response.statusCode = 404;
-        response.end('<h1>404, Halaman tidak ditemukan!</h1> \n');
+        response.end(JSON.stringify({
+            message: 'Halaman tidak ditemukan!',
+        }));
     }
     
 };
