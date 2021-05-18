@@ -51,7 +51,7 @@ const requestListener = (request, response) => {
 
     } else {
         response.statusCode = 404;
-        response.end('<h1>404 Halaman tidak ditemukan!</h1> \n');
+        response.end('<h1>404, Halaman tidak ditemukan!</h1> \n');
     }
     
 };
